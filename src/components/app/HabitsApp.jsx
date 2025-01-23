@@ -14,6 +14,12 @@ const HabitsApp = () => {
         return savedHabits ? JSON.parse(savedHabits) : [];
       });
 
+        // Stato per la mappatura delle attività al calendario
+  const [calendarActivities, setCalendarActivities] = useState({});
+
+  // Stato per l'abitudine selezionata
+  const [selectedHabit, setSelectedHabit] = useState(null);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newHabit, setNewHabit] = useState({ name: '', progress: '', icon: '' });
   
@@ -44,12 +50,41 @@ const HabitsApp = () => {
       closeModal();
     };
 
+    const deleteHabit = (habitId) => {
+      // Rimuovi l'attività dall'elenco
+      const updatedHabits = habits.filter((habit) => habit.id !== habitId);
+      setHabits(updatedHabits);
+      localStorage.setItem('habits', JSON.stringify(updatedHabits));
+  
+      // Rimuovi l'attività anche dal calendario
+      const updatedCalendarActivities = { ...calendarActivities };
+      Object.keys(updatedCalendarActivities).forEach((month) => {
+        Object.keys(updatedCalendarActivities[month]).forEach((day) => {
+          updatedCalendarActivities[month][day] = updatedCalendarActivities[month][day].filter(
+            (id) => id !== habitId
+          );
+  
+          // Se il giorno non ha più attività, lo rimuoviamo
+          if (updatedCalendarActivities[month][day].length === 0) {
+            delete updatedCalendarActivities[month][day];
+          }
+        });
+  
+        // Se il mese non ha più giorni, lo rimuoviamo
+        if (Object.keys(updatedCalendarActivities[month]).length === 0) {
+          delete updatedCalendarActivities[month];
+        }
+      });
+  
+      setCalendarActivities(updatedCalendarActivities);
+    };
+
     useEffect(() => {
         // Sincronizza il localStorage ogni volta che cambia la lista delle abitudini
         localStorage.setItem('habits', JSON.stringify(habits));
       }, [habits]);
 
-      
+
   return (
     <div className= 'container'>
         <h1>Habits Tracker</h1>
@@ -62,12 +97,25 @@ const HabitsApp = () => {
     </div>
     <div className="habit-list">
         {habits.map((habit) => (
-          <div key={habit.id} className="habit-item">
+          <div
+            key={habit.id}
+            className={`habit-item ${selectedHabit === habit.id ? 'selected' : ''}`}
+            onClick={() => setSelectedHabit(habit.id)} // Seleziona l'attività
+          >
             <div className="habit-icon">{habit.icon}</div>
             <div className="habit-details">
               <h2>{habit.name}</h2>
               <p>{habit.progress}</p>
             </div>
+            <button
+              className="delete-habit-button"
+              onClick={(e) => {
+                e.stopPropagation(); // Evita di selezionare l'attività durante l'eliminazione
+                deleteHabit(habit.id);
+              }}
+            >
+              ❌
+            </button>
           </div>
         ))}
       </div>
@@ -96,7 +144,12 @@ const HabitsApp = () => {
           </div>
         </div>
     )}
-    <Calendar />
+     <Calendar
+        selectedHabit={selectedHabit} // Passa l'attività selezionata
+        habits={habits}
+        calendarActivities={calendarActivities}
+        setCalendarActivities={setCalendarActivities}
+      />
     </div>
   );
 };

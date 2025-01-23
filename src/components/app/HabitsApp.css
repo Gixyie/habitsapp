@@ -219,3 +219,22 @@ margin-top: 20px;
     padding: 8px; /* Riduce lo spazio interno */
   }
 }
+
+.habit-item.selected {
+  border: 2px solid #4caf50; /* Verde evidenziato */
+  background-color: #e8f5e9; /* Colore pastello */
+}
+
+.delete-habit-button {
+  
+  background-color: transparent;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: auto;
+}
+
+.delete-habit-button:hover {
+  color: darkred;
+}

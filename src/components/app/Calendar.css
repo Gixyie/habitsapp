@@ -27,6 +27,7 @@
     font-size: 0.9rem;
  }
   .calendar-grid {
+
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 4px;
@@ -34,9 +35,10 @@
 
   
   .day-box {
+  
     display: flex;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background-color: #f3efef;
     border-radius: 3px;
     cursor: pointer;
@@ -64,3 +66,25 @@
     background-color: #76c7c0; /* Colore verde per progresso completato */
   }
   
+  .day-box.completed {
+    background-color: #c8e6c9; /* Verde chiaro */
+    border: 2px solid #4caf50;
+  }
+  .habit-details {
+    display: flex;
+    flex-direction: column;  /* Imposta la disposizione in colonna */
+  align-items: flex-start; /* Allinea gli elementi a sinistra */
+  padding: 0;
+  margin: 0;
+  text-align: center;  /* Allinea il testo al centro */
+  width: 100%;  /* Assicura che occupi tutta la larghezza disponibile */
+}
+
+  .habit-name {
+    font-size: 0.6rem;  /* Aumenta la dimensione del testo per visibilità */
+    color: #555;
+    list-style: none;  /* Rimuove i puntini */
+    margin: 0.3px 0;  /* Aggiunge un po' di margine tra gli elementi */
+    text-align: center; /* Centra il testo */
+    width: 100%;  /* Occupare tutta la larghezza del contenitore */
+  }
