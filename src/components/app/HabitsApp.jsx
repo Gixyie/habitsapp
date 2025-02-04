@@ -1,154 +1,121 @@
-import React, {useState, useEffect} from 'react'
-import './HabitsApp.css'
+import React, { useState, useEffect } from "react";
 import Calendar from "./Calendar";
-
-
-
+import "./HabitsApp.css";
 
 const HabitsApp = () => {
- // Stato per la lista delle abitudini
- 
-    const [habits, setHabits] = useState(() => {
-        // Recupera i dati dal localStorage all'avvio
-        const savedHabits = localStorage.getItem('habits');
-        return savedHabits ? JSON.parse(savedHabits) : [];
-      });
-
-        // Stato per la mappatura delle attività al calendario
-  const [calendarActivities, setCalendarActivities] = useState({});
-
-  // Stato per l'abitudine selezionata
+  const [habits, setHabits] = useState([]);
   const [selectedHabit, setSelectedHabit] = useState(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [calendarActivities, setCalendarActivities] = useState({});
+  const [newHabitName, setNewHabitName] = useState("");  // Stato per il nome della nuova abitudine
+  const [newHabitColor, setNewHabitColor] = useState("#FF5733"); // Stato per il colore della nuova abitudine
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newHabit, setNewHabit] = useState({ name: '', progress: '', icon: '' });
-  
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => {
-      setIsModalOpen(false);
-      setNewHabit({ name: '', icon: '' }); // Resetta il form
-    };
-  
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setNewHabit((prevHabit) => ({ 
-        ...prevHabit, 
-        [name]: value ,
-    }));
-    };
-  
+  // Funzione per generare un colore casuale
+  const getRandomColor = () => {
+    const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A8", "#F3FF33"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
 
- // Funzione per aggiungere una nuova abitudine
- const addHabit = () => {
-    if (!newHabit.name) {
-        alert('Per favore, compila tutti i campi!');
-        return;
-      }
-      const updatedHabits = [...habits, { id: habits.length + 1, ...newHabit }];
-      setHabits(updatedHabits);
-      localStorage.setItem('habits', JSON.stringify(updatedHabits)); // Salva nel localStorage
-      closeModal();
-    };
+  useEffect(() => {
+    const savedData = JSON.parse(localStorage.getItem("habitData")) || {};
+    setCalendarActivities(savedData);
+  }, []);
 
-    const deleteHabit = (habitId) => {
-      // Rimuovi l'attività dall'elenco
-      const updatedHabits = habits.filter((habit) => habit.id !== habitId);
-      setHabits(updatedHabits);
-      localStorage.setItem('habits', JSON.stringify(updatedHabits));
-  
-      // Rimuovi l'attività anche dal calendario
-      const updatedCalendarActivities = { ...calendarActivities };
-      Object.keys(updatedCalendarActivities).forEach((month) => {
-        Object.keys(updatedCalendarActivities[month]).forEach((day) => {
-          updatedCalendarActivities[month][day] = updatedCalendarActivities[month][day].filter(
-            (id) => id !== habitId
-          );
-  
-          // Se il giorno non ha più attività, lo rimuoviamo
-          if (updatedCalendarActivities[month][day].length === 0) {
-            delete updatedCalendarActivities[month][day];
-          }
-        });
-  
-        // Se il mese non ha più giorni, lo rimuoviamo
-        if (Object.keys(updatedCalendarActivities[month]).length === 0) {
-          delete updatedCalendarActivities[month];
-        }
-      });
-  
-      setCalendarActivities(updatedCalendarActivities);
-    };
+  useEffect(() => {
+    localStorage.setItem("habitData", JSON.stringify(calendarActivities));
+  }, [calendarActivities]);
 
-    useEffect(() => {
-        // Sincronizza il localStorage ogni volta che cambia la lista delle abitudini
-        localStorage.setItem('habits', JSON.stringify(habits));
-      }, [habits]);
+  const addHabit = () => {
+    if (newHabitName) {
+      setHabits([...habits, { name: newHabitName, color: newHabitColor || getRandomColor() }]);
+      setNewHabitName("");
+      setNewHabitColor("#FF5733"); // Reset del colore
+    }
+  };
 
+  const selectHabit = (habit) => {
+    setSelectedHabit(habit);
+  };
+
+  const assignHabitToDay = (date) => {
+    if (!selectedHabit) {
+      alert("Seleziona un'abitudine prima di assegnarla!");
+      return;
+    }
+    const key = `${currentYear}-${currentMonth}`;
+    setCalendarActivities((prev) => {
+      const updated = { ...prev };
+      if (!updated[key]) updated[key] = {};
+      if (!updated[key][date]) updated[key][date] = [];
+      if (!updated[key][date].includes(selectedHabit.name))
+        updated[key][date].push(selectedHabit.name);
+      return updated;
+    });
+  };
+
+  const changeMonth = (offset) => {
+    let newMonth = currentMonth + offset;
+    let newYear = currentYear;
+    if (newMonth < 0) {
+      newMonth = 11;
+      newYear--;
+    } else if (newMonth > 11) {
+      newMonth = 0;
+      newYear++;
+    }
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
+  };
 
   return (
-    <div className= 'container'>
-        <h1>Habits Tracker</h1>
-    <div className= 'week-calendar'>
-        {['Mo', 'Tu', 'Wh', 'Th', 'Fr', 'Sa', 'Sun'].map((day, index) => (
-            <div key={index} className="day-circle">
-                {day}
-            </div>
-        ))}
-    </div>
-    <div className="habit-list">
-        {habits.map((habit) => (
-          <div
-            key={habit.id}
-            className={`habit-item ${selectedHabit === habit.id ? 'selected' : ''}`}
-            onClick={() => setSelectedHabit(habit.id)} // Seleziona l'attività
+    <div className="container">
+      <h1>Habit Tracker</h1>
+      
+      {/* Navigazione per cambiare mese */}
+      <div className="month-nav">
+        <button onClick={() => changeMonth(-1)}>◀</button>
+        <span>{new Date(currentYear, currentMonth).toLocaleString("default", { month: "long", year: "numeric" })}</span>
+        <button onClick={() => changeMonth(1)}>▶</button>
+      </div>
+  
+      {/* Aggiunta di una nuova abitudine */}
+      <div className="add-habit-container">
+        <input
+          type="text"
+          placeholder="Nome abitudine"
+          value={newHabitName}
+          onChange={(e) => setNewHabitName(e.target.value)}
+        />
+        <input
+          type="color"
+          value={newHabitColor}
+          onChange={(e) => setNewHabitColor(e.target.value)}
+        />
+        <button onClick={addHabit}>Aggiungi</button>
+      </div>
+  
+      {/* Lista delle abitudini */}
+      <div className="habit-list">
+        {habits.map((habit, index) => (
+          <div 
+            key={index} 
+            className="habit-item" 
+            style={{ backgroundColor: habit.color }} 
+            onClick={() => selectHabit(habit)}
           >
-            <div className="habit-icon">{habit.icon}</div>
-            <div className="habit-details">
-              <h2>{habit.name}</h2>
-              <p>{habit.progress}</p>
-            </div>
-            <button
-              className="delete-habit-button"
-              onClick={(e) => {
-                e.stopPropagation(); // Evita di selezionare l'attività durante l'eliminazione
-                deleteHabit(habit.id);
-              }}
-            >
-              ❌
-            </button>
+            {habit.name}
           </div>
         ))}
       </div>
-      <button className="add-habit-button" onClick={openModal}>+</button>
-    
-    
-      {/* Modale */}
-      {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Aggiungi una nuova abitudine</h2>
-            <label>
-              Nome:
-              <input
-                type="text"
-                name="name"
-                value={newHabit.name}
-                onChange={handleInputChange}
-              />
-            </label>
-            
-            <div className="modal-buttons">
-              <button className="modal-add-button" onClick={addHabit}>Aggiungi</button>
-              <button className="modal-cancel-button" onClick={closeModal}>Annulla</button>
-            </div>
-          </div>
-        </div>
-    )}
-     <Calendar
-        selectedHabit={selectedHabit} // Passa l'attività selezionata
+  
+      {/* Calendario */}
+      <Calendar
+        month={currentMonth}
+        year={currentYear}
+        activities={calendarActivities[`${currentYear}-${currentMonth}`] || {}}
+        assignHabitToDay={assignHabitToDay}
         habits={habits}
-        calendarActivities={calendarActivities}
-        setCalendarActivities={setCalendarActivities}
       />
     </div>
   );

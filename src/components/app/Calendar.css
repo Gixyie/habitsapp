@@ -1,90 +1,25 @@
-.calendar {
-    margin: 20px auto;
-    width: 90%;
-    max-width: 1000px;
-    text-align: center;
-  }
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .navbar h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #555;
-    letter-spacing: 4px;
-  }
- .days-of-week{
-    display: grid;
-    grid-template-columns: repeat(7,1fr);
-    margin-bottom: 10px;
- }
- .day-name{
-    font-weight: bold;
-    font-size: 0.9rem;
- }
-  .calendar-grid {
-
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
-
-  
-  .day-box {
-  
-    display: flex;
-    width: 50px;
-    height: 50px;
-    background-color: #f3efef;
-    border-radius: 3px;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease;
-  }
-  button {
-    background-color: var(--light-green);
-    color: white;
-   border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 1.3rem;
-    font-weight: bold;
-    border-radius: 50%;
-    height: 3rem;
-    width: 3rem;
-  }
-  
-  button:hover {
-    background-color: var(--dark-green);
-  }
-  .day-box.completed {
-    background-color: #76c7c0; /* Colore verde per progresso completato */
-  }
-  
-  .day-box.completed {
-    background-color: #c8e6c9; /* Verde chiaro */
-    border: 2px solid #4caf50;
-  }
-  .habit-details {
-    display: flex;
-    flex-direction: column;  /* Imposta la disposizione in colonna */
-  align-items: flex-start; /* Allinea gli elementi a sinistra */
-  padding: 0;
-  margin: 0;
-  text-align: center;  /* Allinea il testo al centro */
-  width: 100%;  /* Assicura che occupi tutta la larghezza disponibile */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 20px;
 }
 
-  .habit-name {
-    font-size: 0.6rem;  /* Aumenta la dimensione del testo per visibilità */
-    color: #555;
-    list-style: none;  /* Rimuove i puntini */
-    margin: 0.3px 0;  /* Aggiunge un po' di margine tra gli elementi */
-    text-align: center; /* Centra il testo */
-    width: 100%;  /* Occupare tutta la larghezza del contenitore */
-  }
+.calendar-day {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.calendar-day:hover {
+  transform: scale(1.1);
+}
+
+.empty {
+  visibility: hidden;
+}

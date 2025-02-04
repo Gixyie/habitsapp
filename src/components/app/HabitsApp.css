@@ -1,240 +1,61 @@
-:root {
-    --light-green: #b8e6d1;
-    --light-blue: #cce7f0;
-    --dark-green:  #4caf50;
-    --text-color: #333;
-  }
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
 
-  body {
-    margin: 0;
-    font-family: 'poppins', serif;
-    background-color: var(--light-blue);
-    color: var(var(--text-color));
-  }
-  .container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 20px;
-  }
-.container h1{
-    color: #333;
-    letter-spacing: 4px;
-} 
-  .week-calendar {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin-bottom: 20px;
-    margin-top: 20px;
-  }
+.container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 800px;
+}
 
-  .day-circle{
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--light-green);
-    border-radius: 50%;
-    font-weight: 500;
-    color: var(--dark-green);
-    cursor: pointer;
-  }
-  .day-circle:hover{
-    background-color: var(--dark-green);
-    color: white;
-  }
-  .habit-list{
-   
-    width: 100%;
-  }
-
-  .habit-item{
-    display: flex;
-    align-items: center;
-    background-color: var(--light-green);
-    margin: 10px 0;
-    padding: 15px;
-    border-radius: 10%;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  .habit-details h2{
-    color: white;
-    margin: 0;
-    font-size: 1.2rem;
-  }
-  .habit-details p{
-    margin: 5px 0 0;
-    font-size: 18px;
-    font-weight: 500;
-    color: #555;
-  }
-  .habit-icon{
-    font-size: 20px;
-    padding: 8px 10px;
-  }
-  .add-habit-button{
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: var(--dark-green);
-    color: white;
-    font-size: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-   
-  }
-  .add-habit-button:hover{
-    background-color: #388e3c;
-  }
-
-
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    box-sizing: border-box;
-  }
-  
-  .modal-content {
- 
-    background:var(--light-green);
-    color: #555;
-    padding: 20px;
-    border-radius: 8px;
-    width: 40%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1001;
-  }
-
-  
-  .modal-content h2 {
-    margin: auto;
-   font-size: 1.3rem;
-   display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 500;
-    padding: 20px;
-    color: white;
-  }
-  .modal label{
-    display: flex;
-    flex-direction: column;
-    align-items:flex-start;
-margin-top: 20px;
+.month-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 20px;
-  font-size: 1rem;
-  color: white;
-  }
-
-  .modal-content input {
-    width: 100%; /* L'input occupa tutta la larghezza disponibile */
-    padding: 10px; /* Spaziatura interna per migliorare la leggibilità */
-    font-size: 16px; /* Dimensione del testo */
-    border: 1px solid #ccc; /* Bordo sottile */
-    border-radius: 5px; /* Angoli arrotondati */
-    margin-top: 5px; /* Spazio tra il testo del label e l'input */
-    box-sizing: border-box; /* Evita overflow quando si aggiungono padding o bordi */
-  }
-  
-  .modal-content input:focus{
-   outline: none;
-   
-  }
-  
-  .modal-buttons {
-
-    display: flex; /* Usa flexbox per gestire i bottoni */
-    justify-content: space-between; /* Distribuisce i bottoni in modo uniforme */
-    align-items: center; /* Allinea verticalmente */
-    gap: 10px; /* Spazio tra i bottoni */
-    margin-top: 20px; /* Spaziatura dal resto della modale */
-  }
-  .modal-buttons button{
-    flex: 1;
-    font-size: 1rem; /* Dimensione del testo */
-    font-weight: 400; /* Grassetto */
-    color: #fff; /* Testo bianco */
-    background: var(--dark-green); /* Colore di base blu */
-    border: none; /* Rimuove il bordo */
-    border-radius: 5px; /* Angoli arrotondati */
-    padding: 8px; /* Spaziatura interna */
-    cursor: pointer; /* Cambia il cursore a mano */
-    transition: transform 0.2s ease, background 0.2s ease; /* Transizioni morbide */
-  }
-  
-/* Stile specifico per i bottoni "Aggiungi" e "Annulla" */
-.modal-add-button:hover {
-  background-color: rgb(11, 193, 11); /* Verde per "Aggiungi" */
 }
 
-.modal-cancel-button:hover {
-  background-color: #dc3545; /* Rosso per "Annulla" */
+.habit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* Effetto al passaggio del mouse */
-.modal-buttons button:hover {
-
-  transform: scale(1.05); /* Ingrandisce leggermente */
-}
-
-/* Effetto al click */
-.modal-buttons button:active {
-  transform: scale(0.95); /* Rimpicciolisce leggermente */
-}
-
-/* Adatta il contenuto della modale su schermi piccoli */
-@media (max-width: 480px) {
-  .modal {
-    width: 100%;
-    padding: 15px; /* Riduce il padding */
-  }
-.modal label{
-  width: 100%;
-}
-  .modal-content input{
-    width: 100%;
-    justify-content: center;
-  }
-
-
-  .modal-buttons button {
-    font-size: 14px; /* Riduce la dimensione del testo */
-    padding: 8px; /* Riduce lo spazio interno */
-  }
-}
-
-.habit-item.selected {
-  border: 2px solid #4caf50; /* Verde evidenziato */
-  background-color: #e8f5e9; /* Colore pastello */
-}
-
-.delete-habit-button {
-  
-  background-color: transparent;
-  border: none;
-  color: red;
+.habit-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
-  margin-left: auto;
 }
 
-.delete-habit-button:hover {
-  color: darkred;
+.habit-color {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.add-habit-button {
+  display: block;
+  margin: 20px auto;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
 }
