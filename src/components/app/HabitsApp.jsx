@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "./Calendar";
 import "./HabitsApp.css";
+import Habit from "../../Habit";
+
+
+
 
 const HabitsApp = () => {
   const [habits, setHabits] = useState([]);
@@ -8,8 +12,9 @@ const HabitsApp = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [calendarActivities, setCalendarActivities] = useState({});
-  const [newHabitName, setNewHabitName] = useState("");  // Stato per il nome della nuova abitudine
-  const [newHabitColor, setNewHabitColor] = useState("#FF5733"); // Stato per il colore della nuova abitudine
+  const [showHabitForm, setShowHabitForm] = useState(false); // Stato per mostrare il form
+  const [newHabitName, setNewHabitName] = useState("");  
+  const [newHabitColor, setNewHabitColor] = useState("#FF5733"); 
 
   // Funzione per generare un colore casuale
   const getRandomColor = () => {
@@ -31,6 +36,7 @@ const HabitsApp = () => {
       setHabits([...habits, { name: newHabitName, color: newHabitColor || getRandomColor() }]);
       setNewHabitName("");
       setNewHabitColor("#FF5733"); // Reset del colore
+      setShowHabitForm(false); // Chiudi il form dopo aver aggiunto l'abitudine
     }
   };
 
@@ -48,8 +54,12 @@ const HabitsApp = () => {
       const updated = { ...prev };
       if (!updated[key]) updated[key] = {};
       if (!updated[key][date]) updated[key][date] = [];
-      if (!updated[key][date].includes(selectedHabit.name))
-        updated[key][date].push(selectedHabit.name);
+      
+      // Evita duplicati
+      if (!updated[key][date].some(habit => habit.name === selectedHabit.name)) {
+        updated[key][date].push(selectedHabit);
+      }
+  
       return updated;
     });
   };
@@ -70,31 +80,29 @@ const HabitsApp = () => {
 
   return (
     <div className="container">
-      <h1>Habit Tracker</h1>
-      
+      <div className="header">
+        <h1>Habit Tracker <i className="ri-checkbox-circle-line"></i></h1>
+        <button onClick={() => setShowHabitForm(true)}>Aggiungi nuova abitudine</button>
+      </div>
+
+      {/* Mostra il form per aggiungere un'abitudine */}
+      {showHabitForm && (
+        <Habit 
+          newHabitName={newHabitName}
+          setNewHabitName={setNewHabitName}
+          newHabitColor={newHabitColor}
+          setNewHabitColor={setNewHabitColor}
+          addHabit={addHabit}
+        />
+      )}
+
       {/* Navigazione per cambiare mese */}
       <div className="month-nav">
-        <button onClick={() => changeMonth(-1)}>◀</button>
+        <button onClick={() => changeMonth(-1)}><i className="ri-arrow-left-s-line"></i></button>
         <span>{new Date(currentYear, currentMonth).toLocaleString("default", { month: "long", year: "numeric" })}</span>
-        <button onClick={() => changeMonth(1)}>▶</button>
+        <button onClick={() => changeMonth(1)}><i className="ri-arrow-right-s-line"></i></button>
       </div>
-  
-      {/* Aggiunta di una nuova abitudine */}
-      <div className="add-habit-container">
-        <input
-          type="text"
-          placeholder="Nome abitudine"
-          value={newHabitName}
-          onChange={(e) => setNewHabitName(e.target.value)}
-        />
-        <input
-          type="color"
-          value={newHabitColor}
-          onChange={(e) => setNewHabitColor(e.target.value)}
-        />
-        <button onClick={addHabit}>Aggiungi</button>
-      </div>
-  
+
       {/* Lista delle abitudini */}
       <div className="habit-list">
         {habits.map((habit, index) => (
@@ -108,7 +116,7 @@ const HabitsApp = () => {
           </div>
         ))}
       </div>
-  
+
       {/* Calendario */}
       <Calendar
         month={currentMonth}

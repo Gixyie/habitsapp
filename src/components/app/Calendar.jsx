@@ -3,33 +3,47 @@ import "./Calendar.css";
 
 const Calendar = ({ month, year, activities, assignHabitToDay, habits }) => {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const startDay = new Date(year, month, 1).getDay();
-  const calendarDays = [];
+  const firstDay = new Date(year, month, 1).getDay(); // 0 = Domenica, 6 = Sabato
 
-  for (let i = 0; i < startDay; i++) {
-    calendarDays.push(<div key={`empty-${i}`} className="calendar-day empty"></div>);
-  }
+  const weekDays = ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"];
 
-  for (let day = 1; day <= daysInMonth; day++) {
-    const dateKey = `${day}`;
-    const dayHabits = activities[dateKey] || [];
-    const habitColors = dayHabits.map(
-      (habitName) => habits.find((h) => h.name === habitName)?.color || "#ccc"
-    );
-
-    calendarDays.push(
-      <div
-        key={day}
-        className="calendar-day"
-        onClick={() => assignHabitToDay(dateKey)}
-        style={{ background: habitColors.length ? `linear-gradient(45deg, ${habitColors.join(", ")})` : "white" }}
-      >
-        {day}
+  return (
+    <div className="calendar">
+      {/* Giorni della settimana */}
+      <div className="week-days">
+        {weekDays.map((day, index) => (
+          <div key={index} className="week-day">{day}</div>
+        ))}
       </div>
-    );
-  }
 
-  return <div className="calendar-grid">{calendarDays}</div>;
+      {/* Giorni del mese */}
+      <div className="days-grid">
+        {/* Spazi vuoti per allineare il primo giorno del mese */}
+        {Array(firstDay).fill(null).map((_, index) => (
+          <div key={`empty-${index}`} className="empty-day"></div>
+        ))}
+
+        {/* Giorni del mese */}
+        {Array.from({ length: daysInMonth }, (_, index) => {
+          const day = index + 1;
+          const dateKey = `${year}-${month}-${day}`;
+          return (
+            <div
+              key={day}
+              className="day"
+              onClick={() => assignHabitToDay(day)}
+            >
+              {day}
+              {/* Mostra le attività associate a quel giorno */}
+              {activities[day] && activities[day].map((habit, idx) => (
+                <div key={idx} className="habit-dot" style={{ backgroundColor: habit.color }}></div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 };
 
 export default Calendar;
