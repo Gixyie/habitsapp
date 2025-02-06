@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "./Calendar";
 import "./HabitsApp.css";
-import Habit from "../../Habit";
-
-
-
+import Habit from "../../Habit"; // Importiamo il form correttamente
 
 const HabitsApp = () => {
   const [habits, setHabits] = useState([]);
@@ -12,15 +9,9 @@ const HabitsApp = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [calendarActivities, setCalendarActivities] = useState({});
-  const [showHabitForm, setShowHabitForm] = useState(false); // Stato per mostrare il form
+  const [showHabitForm, setShowHabitForm] = useState(false);
   const [newHabitName, setNewHabitName] = useState("");  
   const [newHabitColor, setNewHabitColor] = useState("#FF5733"); 
-
-  // Funzione per generare un colore casuale
-  const getRandomColor = () => {
-    const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A8", "#F3FF33"];
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
 
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("habitData")) || {};
@@ -33,10 +24,10 @@ const HabitsApp = () => {
 
   const addHabit = () => {
     if (newHabitName) {
-      setHabits([...habits, { name: newHabitName, color: newHabitColor || getRandomColor() }]);
+      setHabits([...habits, { name: newHabitName, color: newHabitColor }]);
       setNewHabitName("");
-      setNewHabitColor("#FF5733"); // Reset del colore
-      setShowHabitForm(false); // Chiudi il form dopo aver aggiunto l'abitudine
+      setNewHabitColor("#FF5733");
+      setShowHabitForm(false);
     }
   };
 
@@ -55,7 +46,6 @@ const HabitsApp = () => {
       if (!updated[key]) updated[key] = {};
       if (!updated[key][date]) updated[key][date] = [];
       
-      // Evita duplicati
       if (!updated[key][date].some(habit => habit.name === selectedHabit.name)) {
         updated[key][date].push(selectedHabit);
       }
@@ -85,7 +75,7 @@ const HabitsApp = () => {
         <button onClick={() => setShowHabitForm(true)}>Aggiungi nuova abitudine</button>
       </div>
 
-      {/* Mostra il form per aggiungere un'abitudine */}
+      {/* Mostra il form come popup/modal */}
       {showHabitForm && (
         <Habit 
           newHabitName={newHabitName}
@@ -93,6 +83,7 @@ const HabitsApp = () => {
           newHabitColor={newHabitColor}
           setNewHabitColor={setNewHabitColor}
           addHabit={addHabit}
+          setShowHabitForm={setShowHabitForm} // Passiamo la funzione per chiudere il popup
         />
       )}
 

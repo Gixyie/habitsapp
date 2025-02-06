@@ -1,0 +1,93 @@
+/* Sfondo scuro dietro il popup */
+.habit-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Contenitore del form */
+  .habit-modal {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Titolo */
+  .habit-modal h2 {
+    font-size: 1.5rem;
+    color: #333;
+    padding: 10px;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  /* Input di testo */
+  .habit-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  /* Selettore colore */
+  .habit-color-picker {
+    width: 100%;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+
+  }
+  
+  /* Pulsanti */
+  .habit-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .add-button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 48%;
+  }
+  
+  .cancel-button {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 48%;
+  }
+  
+  .add-button:hover {
+    background: #45a049;
+  }
+  
+  .cancel-button:hover {
+    background: #e60000;
+  }
+  
