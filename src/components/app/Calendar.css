@@ -2,57 +2,59 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  width: 100%;
 }
 
-.week-days {
+.weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   width: 100%;
   text-align: center;
   font-weight: bold;
-  margin-bottom: 10px;
-  gap: 10px;
- 
-}
-
-.week-day {
-  padding: 10px;
-  background-color: #f0f0f0;
-  border-radius: 5px;
-  text-align: center;
-  
+  padding: 10px 0;
+  background-color: #f3f3f3;
 }
 
 .days-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 13px;
+  gap: 5px;
   width: 100%;
-margin-left: 30px;
-margin-top: 8px;
-
 }
 
-.day, .empty-day {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #ccc;
-  cursor: pointer;
+.calendar-day {
+  position: relative;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
   text-align: center;
-  
+  cursor: pointer;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.day:hover {
-  background-color: #e0e0e0;
+.day-cell:hover {
+  background: #f0f0f0;
 }
 
-.habit-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+.habits-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-top: 5px;
+}
+
+.habit-badge {
+  padding: 3px 6px;
+  border-radius: 5px;
+  color: white;
+  font-size: 0.8rem;
+  margin: 2px;
+}
+
+.empty-day {
+  visibility: hidden;
 }

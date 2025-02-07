@@ -1,0 +1,56 @@
+/* Styles for DayFocus */
+.day-focus {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .day-focus h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .day-focus ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .day-focus li {
+    background-color: #f0f0f0;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .day-focus button {
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .day-focus button:hover {
+    background-color: darkred;
+  }
+  
+  /* Adjust layout to avoid full screen overflow */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Example for HabitsApp header */
+  .habits-app-header {
+    padding: 10px;
+    background-color: #0073e6;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+  }
+  
