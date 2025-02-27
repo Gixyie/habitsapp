@@ -1,23 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Calendar.css";
-import { useNavigate } from "react-router-dom";
 
-const Calendar = ({ month, year, activities, assignHabitToDay, habits, openDayFocus }) => {
-  const [selectedHabit, setSelectedHabit] = useState(null);  // Aggiungi stato per l'abitudine selezionata
-  const navigate = useNavigate();
+const Calendar = ({ month, year, activities, assignHabitToDay, openDayFocus, selectedHabit }) => {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayOfWeek = new Date(year, month, 1).getDay();
-  
+
   const handleDayClick = (day) => {
     if (selectedHabit) {
-      assignHabitToDay(day, selectedHabit); // Passa l'abitudine selezionata al giorno
+      assignHabitToDay(day);
     } else {
-      navigate(`/day/${day}`); // Se non c'è un'abitudine selezionata, apri il focus del giorno
+      openDayFocus(day);
     }
-  };
-
-  const handleHabitSelect = (habit) => {
-    setSelectedHabit(habit); // Imposta l'abitudine selezionata
   };
 
   return (
@@ -28,21 +21,11 @@ const Calendar = ({ month, year, activities, assignHabitToDay, habits, openDayFo
         ))}
       </div>
 
-      <div className="habits-selector">
-        {habits.map((habit, index) => (
-          <div key={index} className="habit-badge" onClick={() => handleHabitSelect(habit)} style={{ backgroundColor: habit.color }}>
-            {habit.name}
-          </div>
-        ))}
-      </div>
-
       <div className="days-grid">
-        {/* Aggiunge spazi vuoti prima del primo giorno del mese */}
         {Array.from({ length: firstDayOfWeek }, (_, i) => (
           <div key={`empty-${i}`} className="empty-day"></div>
         ))}
 
-        {/* Giorni del mese */}
         {Array.from({ length: daysInMonth }, (_, dayIndex) => {
           const day = dayIndex + 1;
           return (

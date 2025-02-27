@@ -24,6 +24,7 @@
     gap: 10px;
     align-items: center;
     justify-content: center;
+    max-width: 90%;
   }
   
   /* Titolo */
@@ -40,11 +41,13 @@
   /* Input di testo */
   .habit-input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 16px;
     text-align: center;
+    max-width: 300px;
+    transition: all 0.3s ease-in-out;
   }
   
   /* Selettore colore */
@@ -91,3 +94,28 @@
     background: #e60000;
   }
   
+  @media (max-width: 480px) {
+    .habit-modal {
+      padding: 20px;
+      width: 90%;
+    }
+    .habit-modal h2{
+      font-size: 0.5rem;
+    }
+    .habit-input {
+      max-width: 100%;  /* L'input diventa più grande su schermi piccoli */
+    font-size: 14px;
+    padding: 10px;
+      
+    }
+    .habit-buttons {
+      flex-direction: column;
+      grid-area: 10px;
+      
+    }
+    .add-button, .cancel-button {
+      width: 100%;
+      font-size: 1.2rem;
+    padding: 14px;
+    }
+  }

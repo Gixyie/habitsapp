@@ -58,3 +58,77 @@
 .empty-day {
   visibility: hidden;
 }
+/* 🟢 RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .calendar {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .weekdays {
+    font-size: 12px;
+    padding: 8px 0;
+  }
+
+  .days-grid {
+    grid-template-columns: repeat(7, minmax(30px, 1fr));
+    gap: 3px;
+  }
+
+  .calendar-day {
+    min-height: 50px;
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .habit-badge {
+    font-size: 0.7rem;
+    padding: 2px 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .weekdays {
+    font-size: 10px;
+    padding: 8px 0;
+  }
+
+  .days-grid {
+    grid-template-columns: repeat(7, minmax(35px, 1fr));
+   gap: 5px;
+  }
+
+  .calendar-day {
+    min-height: 55px;
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .habit-badge {
+    font-size: 0.7rem;
+    padding: 2px 5px;
+  }
+}
+@media (max-width: 480px) {
+  .weekdays {
+    font-size: 10px;
+    padding: 6px 0;
+  }
+
+  .days-grid {
+    grid-template-columns: repeat(7, minmax(30px, 1fr));
+    gap: 3px;
+  }
+
+  .calendar-day {
+    min-height: 50px;
+    font-size: 10px;
+    padding: 6px;
+    border-radius: 4px;
+  }
+
+  .habit-badge {
+    font-size: 0.65rem;
+    padding: 2px 4px;
+  }
+}
